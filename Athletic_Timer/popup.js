@@ -1,8 +1,5 @@
-//variables
-var tsecs, tmins, thrs, treps, tbrakes;
-
 //Flags used to indicate certain tasks
-var isPaused = false, resetAll = false, pro = false, flag = false;
+var isPaused = false, resetAll = false, pro = false, flag = false, set;
 
 //Notifications
 var end_timer_notification = {
@@ -33,111 +30,43 @@ $(document).ready(function () {
     $('.normal').hide();
     $('.pro').hide();
     $('.display').hide();
-    $('.check').click(function () {
-        $('.check').not(this).prop('checked', false);
+
+    //when Standard mode selected
+    $('#normal_').click(function () {
+        $('.normal').show();
+        $('.display').show();
+        $('.pro').hide();
+        set = 1;
+    });
+    //When Athletic mode is selected
+    $('#athletic_').click(function () {
+        $('.normal').show();
+        $('.display').show();
+        $('.pro').show();
+        set = 2;
     });
 
-    $('#normal_').click(normal_display);
-
-    $('#athletic_').click(pro_display);
-
-});
-// function normal_display(){};
-function normal_display() {
-    $('.normal').show();
-    $('.display').show();
-    $('.pro').hide();
-    // $('.display').show();
-
+    // When start button is pressed
     $('#start').click(function () {
+        var tsecs = $('#seconds').val();
+        var tmins = $('#minutes').val();
+        var thrs = $('#hours').val();
+        var treps = $('#repeat').val();
+        var tbrakes = $('#brake').val();
+        //Standard Mode
+        if (set === 1) {
 
-        tsecs = $('#seconds').val();
-        tmins = $('#minutes').val();
-        thrs = $('#hours').val();
+            var startInterval = setInterval(function () {
 
-        var startInterval = setInterval(function () {
+                if (!isPaused && !resetAll) {
+                    // console.log(thrs + " : " + tmins + " : " + tsecs);
 
-            if (!isPaused && !resetAll) {
-                // console.log(thrs + " : " + tmins + " : " + tsecs);
-
-                var secs = tsecs;
-                var mins = tmins;
-                var hrs = thrs;
-
-                var message = hrs.toString() + " : " + mins.toString() + " : " + secs.toString();
-
-                // console.log("before display");
-                $('#display_').text(message);
-                if (tsecs == 0 && tmins != 0) {
-                    tsecs = 59;
-                    tmins--;
-                }
-                if (tsecs == 0 && tmins == 0 && thrs != 0) {
-                    tmins = 59;
-                    tsecs = 59;
-                    thrs--;
-                }
-                if (tsecs == 0 && tmins == 0 && thrs == 0) {
-                    $('#display_').text("Time's Up !!");
-                    alertMX("Time Up !");
-
-                    chrome.notifications.create('end_timer', end_timer_notification);
-                    chrome.notifications.clear('end_timer');
-
-                    clearInterval(startInterval);
-                }
-
-                tsecs--;
-            }
-            if (resetAll) {
-                $('#hours').text("00");
-                $('#minutes').text("00");
-                $('#seconds').text("00");
-                $('#display_').text("");
-                clearInterval(startInterval);
-            }
-
-        }, 1000);
-    })
-
-    $('#pause').click(function () {
-        isPaused = true;
-    });
-
-    $('#resume').click(function () {
-        isPaused = false;
-    });
-
-    $('#reset').click(function () {
-        resetAll = true;
-    });
-};
-
-function pro_display() {
-    $('.normal').show();
-    $('.display').show();
-    $('.pro').show();
-    $('#start').click(function () {
-        tsecs = $('#seconds').val();
-        tmins = $('#minutes').val();
-        thrs = $('#hours').val();
-        treps = $('#repeat').val();
-        tbrakes = $('#brake').val();
-
-        var interval = setInterval(function () {
-
-            if (!isPaused && !resetAll) {
-
-                console.log(treps + " : " + thrs + " : " + tmins + " : " + tsecs);
-    
-                if(!flag){
                     var secs = tsecs;
                     var mins = tmins;
                     var hrs = thrs;
-                    var rep = treps;
-        
-                    var message = rep.toString() + " :-  " + hrs.toString() + " : " + mins.toString() + " : " + secs.toString();
-        
+
+                    var message = hrs.toString() + " : " + mins.toString() + " : " + secs.toString();
+
                     // console.log("before display");
                     $('#display_').text(message);
                     if (tsecs == 0 && tmins != 0) {
@@ -149,84 +78,160 @@ function pro_display() {
                         tsecs = 59;
                         thrs--;
                     }
-                }
-                if (tsecs == 0 && tmins == 0 && thrs == 0 && treps <= 1) {
-                    if(!flag){
-                        $('#display_').text(" ");
-                        tbrakes = $('#brake').val();
-                    }               
-                    console.log(tbrakes);
-                    console.log(treps + " : " + thrs + " : " + tmins + " : " + tsecs);
-                    flag = 1;
-                    var brk = tbrakes;
-                    message = brk.toString();
-                    $('#display_').text(message);
-                    if (tbrakes <= 1) {
-                        
+                    if (tsecs <= 0 && tmins == 0 && thrs == 0) {
                         $('#display_').text("Time's Up !!");
-                        alertMX("Time Up !")
+                        alertMX("Time Up !");
+
                         chrome.notifications.create('end_timer', end_timer_notification);
                         chrome.notifications.clear('end_timer');
-                        clearInterval(interval);
-                        // pro=false;
-                        // console.log("beforeInterval");
-                        // console.log("afterInternal");
-                        return;
+
+                        clearInterval(startInterval);
                     }
-                    tbrakes--;                
-                    // clearInterval(interval);
-                }
-                
-                if (tsecs == 0 && tmins == 0 && thrs == 0 && treps>1) {
-                    if(!flag){
-                        $('#display_').text(" ");
-                        tbrakes = $('#brake').val();                
-                    }
-                    console.log(tbrakes);
-                    flag = 1;
-                    var brk = tbrakes;
-                    message = brk.toString();
-                    // console.log(message);
-                    $('#display_').text(message);
-                    if (tbrakes <= 1) {
-                        flag=0;
-                        chrome.notifications.create('end_brake', brake_end_notification);
-                        chrome.notifications.clear('end_brake');
-                        tbrakes = $('#brake').val();
-                        // clearInterval(breakInterval)
-                    }
-                    tbrakes--;
-                    if(!flag){
-                        treps--;
-                        tsecs = $('#seconds').val();
-                        tmins = $('#minutes').val();
-                        thrs = $('#hours').val();
-                        tsecs++;
-                    }              
-                }
-                if(!flag){               
+
                     tsecs--;
                 }
-            }
-            if (resetAll) {
-                $('#hours').text("00");
-                $('#minutes').text("00");
-                $('#seconds').text("00");
-                $('#display_').text("");
-                clearInterval(interval);
-            }
-    
-        }, 1000);
-    });
+                if (resetAll) {
+                    $('#hours').text("00");
+                    $('#minutes').text("00");
+                    $('#seconds').text("00");
+                    $('#display_').text(" ");
+                    resetAll = false;
+                    clearInterval(startInterval);
+                }
+
+            }, 1000);//interval end
+
+        }//if end
+
+        // Athletic Mode
+        else if (set === 2) {
+
+            var interval = setInterval(function () {
+
+                if (!isPaused && !resetAll) {
+
+                    console.log(treps + " : " + thrs + " : " + tmins + " : " + tsecs);
+                    console.log("flag : " + flag);
+
+                    if (!flag) {
+                        console.log("in first if");
+                        var secs = tsecs;
+                        var mins = tmins;
+                        var hrs = thrs;
+                        var rep = treps;
+
+                        var message = rep.toString() + " :-  " + hrs.toString() + " : " + mins.toString() + " : " + secs.toString();
+
+                        // console.log("before display");
+                        $('#display_').text(message);
+                        if (tsecs == 0 && tmins != 0) {
+                            tsecs = 59;
+                            tmins--;
+                        }
+                        if (tsecs == 0 && tmins == 0 && thrs != 0) {
+                            tmins = 59;
+                            tsecs = 59;
+                            thrs--;
+                        }
+                    }
+                    if (tsecs <= 0 && tmins == 0 && thrs == 0 && treps <= 1) {
+                        console.log("terminating if");
+                        if (!flag) {
+                            $('#display_').text(" ");
+                            tbrakes = $('#brake').val();
+                        }
+                        console.log(tbrakes);
+                        console.log(treps + " : " + thrs + " : " + tmins + " : " + tsecs);
+                        flag = 1;
+                        var brk = tbrakes;
+                        message = brk.toString();
+                        $('#display_').text(message);
+                        if (tbrakes <= 1) {
+
+                            $('#display_').text("Time's Up !!");
+                            alertMX("Time Up !")
+                            chrome.notifications.create('end_timer', end_timer_notification);
+                            chrome.notifications.clear('end_timer');
+                            flag=false;
+                            clearInterval(interval);
+                            
+                        }
+                        tbrakes--;
+                        // clearInterval(interval);
+                    }
+
+                    if (tsecs <= 0 && tmins == 0 && thrs == 0 && treps > 1) {
+                        console.log("nonterminating if");
+                        if (!flag) {
+                            $('#display_').text(" ");
+                            tbrakes = $('#brake').val();
+                        }
+                        if (!flag && tbrakes == 0) {
+                            treps--;
+                            tsecs = $('#seconds').val();
+                            tmins = $('#minutes').val();
+                            thrs = $('#hours').val();
+                            tsecs++;
+                        }
+                        else {
+
+                            console.log(tbrakes);
+                            flag = 1;
+                            var brk = tbrakes;
+                            message = brk.toString();
+                            // console.log(message);
+                            $('#display_').text(message);
+                            if (tbrakes <= 1) {
+                                flag = 0;
+                                chrome.notifications.create('end_brake', brake_end_notification);
+                                chrome.notifications.clear('end_brake');
+                                tbrakes = $('#brake').val();
+                                // clearInterval(breakInterval)
+                            }
+                            tbrakes--;
+                            if (!flag) {
+                                treps--;
+                                tsecs = $('#seconds').val();
+                                tmins = $('#minutes').val();
+                                thrs = $('#hours').val();
+                                tsecs++;
+                            }
+                        }
+                    }
+                    if (!flag) {
+                        tsecs--;
+                    }
+                }
+                if (resetAll) {
+                    $('#hours').text("00");
+                    $('#minutes').text("00");
+                    $('#seconds').text("00");
+                    $('#display_').text("");
+                    resetAll = false;
+                    clearInterval(interval);
+                }
+
+            }, 1000);//end of interval
+
+        }//else end
+
+
+    });//end of start click
+
+    //Pause Button
     $('#pause').click(function () {
         isPaused = true;
     });
 
+    //Resume Button
     $('#resume').click(function () {
         isPaused = false;
     });
 
+    //Reset Button
     $('#reset').click(function () {
         resetAll = true;
     });
-};
+
+});
+
