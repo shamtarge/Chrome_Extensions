@@ -1,0 +1,20 @@
+body{
+    width: 160px; 
+    background-color: #8e8e8e;
+    font-family: "Times New Roman", Times, serif;
+    color:black;
+    text-align: center;
+}
+
+.Buttons_{
+    display: inline-block;
+    font-family: "Times New Roman", Times, serif;
+    background-color:black;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    padding: 4px 10px;
+    margin: 1px;
+    border-radius: 8px;
+    border: 2px solid #4f5b66;
+}

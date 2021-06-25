@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name" : "YouTube Ad Skip",
+    "description" : "This Extension Will Automatically skip Advertisements played on Youtube.",
+    "version" : "1.0.0",
+    "icons": {
+        "16" : "image/icon16.png",
+        "48" : "image/icon48.png",
+        "128": "image/icon128.png"
+    },
+    "content_scripts":[{
+        "matches" : ["*://*.youtube.com/*"],
+        "js" : ["jquery-3.6.0.min.js", "content.js"]
+    }],
+    "permissions":[
+        "activeTab"
+    ],
+    "browser_action" :{
+        "default_popup": "popup.html"
+    }
+}
