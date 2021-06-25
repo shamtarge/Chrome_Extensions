@@ -27,7 +27,7 @@ $(function(){
                         type: 'basic',
                         iconUrl : 'image/icon48.png',
                         title: 'Limit reached!',
-                        message : 'Uh oh! Looks like uh have reached ur limit!'
+                        message : 'Uh oh! Looks like uh have reached your limit!'
                     };
                     chrome.notifications.create('limitNotif', notif);
                     chrome.notifications.clear('limitNotif');
