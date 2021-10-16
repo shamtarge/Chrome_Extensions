@@ -1,0 +1,27 @@
+{
+    "manifest_version":2,
+    "name": "Screen Shot Manager",
+    "version" : "1.0",
+    "description" : "Allows you to take a snap of the current tab as well as the entire window",
+    "icons":{
+        "16" : "image/icon16.png",
+        "48" : "image/icon48.png",
+        "128" : "image/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": "image/icon32.png"
+    },
+    "permissions":[
+        "desktopCapture",
+        "tabs",
+        "downloads"
+    ],  
+    "content_scripts":[{
+        "matches":["<all_urls>"],
+        "js" : ["jquery-3.6.0.min.js","content_script.js"]
+    }],
+    "background":{
+        "scripts":["background.js"],
+        "persistent": false
+    }
+}
