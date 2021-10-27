@@ -1,4 +1,14 @@
 This Chrome extension is part of a Task given to me by SDS club.<br />
+<br /><br />
+
+UPDATE !!:<br />
+1)The code is working well and is able to download screenshots now.<br />
+2)Failed to implement the editing feature.<br />
+3)The History preview section is working but NOT the way wanted(I could not tget the filename(location) of the image stored in the device else it is fine ).<br />
+
+
+<br />
+<br />
 
 Done till Now:<br />
 1)Added background.js so when user presses the extension, it pops a window.<br />
@@ -15,3 +25,6 @@ What actually happens:<br />
 It works completely fine till step 4), but the contentscript is unable to contact backgroundscript and instead send response to window.js and prompts error "Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist."<br />
 
 I have tried every thing that I could but still unable to find a fix, please help me!<br />
+
+
+
