@@ -1,7 +1,7 @@
 This Chrome extension is part of a Task given to me by SDS club.<br />
 <br /><br />
 
-UPDATE !!:<br />
+UPDATE !!(27/10):<br />
 1)The code is working well and is able to download screenshots now.<br />
 2)Failed to implement the editing feature.<br />
 3)The History preview section is working but NOT the way wanted(I could not tget the filename(location) of the image stored in the device else it is fine ).<br />
@@ -10,7 +10,7 @@ UPDATE !!:<br />
 <br />
 <br />
 
-Done till Now:<br />
+Done till Now (18/10):<br />
 1)Added background.js so when user presses the extension, it pops a window.<br />
 2)The window is a HTML file "window.html" which links window.js with it so when the button "click" is pressed we do.....<br />
 3)When the button is pressed it promts a window which asks us to select a tab , window or the screem(chrome api desktopCapture used for this).<br />
